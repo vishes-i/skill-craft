@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style34.css">
+    <title>Todo List</title>
+</head>
+
+<body style="background-image:url('https://www.meme-arsenal.com/memes/6c45da8e849cf83ccfd1a30da4719ac7.jpg')  ">
+<div class="wrapper">
+    <header>Todo List</header>
+    <div class="inputField">
+        <label for="inputBox"></label><input type="text" id="inputBox" placeholder="ADD YOUR NEW LIST">
+        <button type="button" id="addon">ADD-TASK</button>
+    </div>
+    <ul class="todoList"></ul>
+    <div class="footer">
+        <span>YOU HAVE NOT COMPLETED.THESE <span class="pendingTasks"></span> PENDING-TASK</span>
+        <button id="clean" class="clearAll" STYLE="width: 145px">CLEAR-ALL</button>
+    </div>
+</div>
+<script src="main.js"></script>
+</body>
+</html>
+----------
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+::selection{
+    color: #ffff;
+    background: rgb(142, 73, 232);
+}
+body{
+    width: 100%;
+    height: 100vh;
+    padding: 10px;
+    background: linear-gradient(to bottom, #68EACC 0%, #497BE8 100%);
+}
+.wrapper{
+    background: #fff;
+    max-width: 900px;
+    width: 800px;
+    height: auto;
+    margin: 120px auto;
+    padding: 25px;
+    border-radius: 5px;
+    box-shadow: 6px 10px 15px rgba(0,0,0,0.1);
+}
+.wrapper header{
+    font-size: 30px;
+    font-weight: 600;
+}
+.wrapper .inputField{
+    margin: 20px 0;
+    width: 100%;
+    display: flex;
+    height: 45px;
+}
+.inputField input{
+    width: 85%;
+    height: 100%;
+    outline: none;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+    font-size: 17px;
+    padding-left: 15px;
+    transition: all 0.3s ease;
+}
+.inputField input:focus{
+    border-color: #8E49E8;
+}
+.inputField button{
+    width: 145px;
+    height: 100%;
+    border: none;
+    color: #ffffff;
+    margin-left: 5px;
+    font-size: 21px;
+    outline: none;
+    background: #b80131;
+    border-radius: 3px;
+    opacity: 0.6;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+.inputField button:hover,
+.footer button:hover{
+    background: #126ef1;
+}
+.inputField button.active{
+    opacity: 1;
+
+    pointer-events: auto;
+}
+.wrapper .todoList{
+    max-height: 450px;
+    overflow-y: auto;
+}
+.todoList li{
+    position: relative;
+    list-style: none;
+    height: 45px;
+    line-height: 45px;
+    margin-bottom: 8px;
+    background: #f2f2f2;
+    border-radius: 3px;
+    padding: 0 15px;
+    cursor: default;
+    overflow: hidden;
+}
+.todoList li .icon{
+    position: absolute;
+    right: 0;
+    top: 0;
+    background: #e74c3c;
+    width: 145px;
+    text-align: center;
+    color: #fff;
+    border-radius: 0 3px 3px 0;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.todoList li:hover .icon{
+    right: 0;
+}
+.wrapper .footer{
+    display: flex;
+    width: 100%;
+    margin-top: 20px;
+    align-items: center;
+    justify-content: space-between;
+}
+.footer button{
+    padding: 6px 10px;
+    border-radius: 3px;
+    border: none;
+    outline: none;
+    color: #333037;
+    font-weight: 400;
+    font-size: 16px;
+    margin-left: 5px;
+    background: #22ae03;
+    cursor: pointer;
+    user-select: none;
+    opacity: 0.6;
+    transition: all 0.3s ease;
+}
+.footer button.active{
+    opacity: 1;
+    pointer-events: auto;
+}
+
+const inputValue = document.getElementById('inputBox');
+const add = document.getElementById('addon');
+const todoList = document.querySelector('.todoList');
+const clean = document.getElementById('clean');
+const pendingTasks = document.querySelector('.pendingTasks');
+
+let todos = JSON.parse(localStorage.getItem('todos')) || [];
+
+console.log(todos);
+
+
+renderTodoList();
+
+function updateLocalStorage() {
+    localStorage.setItem('todos', JSON.stringify(todos));
+}
+
+add.addEventListener("click", function (e) {
+    const inputBox = inputValue.value;
+    if (inputBox.trim() !== '') {
+
+        if (selectedTaskIndex !== null) {
+            todos[selectedTaskIndex] = inputBox;
+            selectedTaskIndex = null;
+        } else {
+            todos.push(inputBox);
+        }
+        inputValue.value = '';
+        renderTodoList();
+        updateLocalStorage();
+    }
+});
+
+clean.addEventListener("click", function (e) {
+    todos = [];
+    renderTodoList();
+    updateLocalStorage();
+});
+
+let selectedTaskIndex = null;
+
+function renderTodoList() {
+    todoList.innerHTML = "";
+    todos.forEach(function (item, index) {
+        const li = document.createElement("li");
+        li.textContent = item;
+        li.addEventListener("click", () => {
+            selectedTaskIndex = (selectedTaskIndex === index) ? null : index;
+            inputValue.value = (selectedTaskIndex !== null) ? item : '';
+        });
+
+        const deleteButton = document.createElement("div");
+        deleteButton.textContent = "DELETE-TASK";
+        deleteButton.classList.add("icon");
+        deleteButton.addEventListener("click", function () {
+            deleteTodoItem(index);
+        });
+
+
+        li.appendChild(deleteButton);
+        todoList.appendChild(li);
+    });
+    totalTask()
+}
+
+
+function deleteTodoItem(index) {
+    todos.splice(index, 1);
+    renderTodoList();
+    inputValue.value = '';
+    updateLocalStorage(); // Update local storage
+}
+
+
+function totalTask() {
+    const task = todos.length;
+    pendingTasks.textContent = task;
+}
+
