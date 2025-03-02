@@ -1,0 +1,1767 @@
+<!doctype html>
+<html lang="en">
+<head>
+ <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="style67.css">
+
+    <title>Quiz App using JavaScript</title>
+</head>
+<body style="background-image: url('https://cdna.artstation.com/p/assets/images/images/028/102/058/original/pixel-jeff-matrix-s.gif?1593487263');">
+    
+    <div class="landing" 
+    id="start-screen" style="width: 600PX; height: 600PX; text-align: center; font-family: 'Times New Roman', Times, serif; font-size:x-large; font-weight: bolder; margin-left: 460PX; margin-top:110px ;">
+    <h1 style="color: #fff;font-weight: bolder;">
+        Coding Quiz Challenge
+    </h1>
+    <h6 id="top" style="color: #fff; font-weight: bolder;">
+       GENERAL QUESTION COMPUTER SCIENCE ENGINEERING 
+       <p style="color: #fff;font-weight: bolder;">RELATED  TO FULL STACK WEB DEVELOPMENT QUIZ</p>
+   </h1>
+  
+  
+  
+   <img src="https://live.staticflickr.com/4626/39736982911_079635c2d4.jpg" width="200px" height="150px" style="margin-top: 20PX;">
+  
+   </div>
+    <div class="start-screen">
+        <button id="start-button" style="margin-top: 200PX; background-color: darkgoldenrod;">Start</button>
+    </div>
+    <div id="display-container" style="background-color: aqua;color: #000;border: 13px solid aqua">
+        <div class="header">
+            <div class="number-of-count" style="background-color: rgb(182, 70, 98);padding: 16px;" >
+                <span class="number-of-question"></span>
+            </div>
+            <div class="timer-div" style="background-color: rgb(2, 30, 188);">
+                <img src="https://uxwing.com/wp-content/themes/uxwing/download/time-and-date/stopwatch-icon.png"
+                    width="20px" />
+                <span class="time-left">60s</span>
+            </div>
+        </div>
+        <div id="container">
+</div>
+<button id="back-button">Back</button>
+        <button id="next-button">Next</button>
+    </div>
+    <div class="score-container hide" style="margin-top: 150PX;">
+       <h4 style="font-size:xx-large; font-family: 'Times New Roman', Times, serif; font-weight: bolder; margin-top:50PX;color: darkred ;">RESULT DISPLAYED</h3> 
+        <h4 style="font-size:XX-large; font-family: 'Times New Roman', Times, serif; font-weight: bolder;color: darkred;">CLICK NOW!</h3>
+        <button >
+            <a  style="text-decoration: none; font-size: xx-large; font-weight: bolder; font-family: 'Times New Roman', Times, serif; color: rgba(3, 65, 165, 0.544);margin-top: 30px;" href="end.html">SCORE-CARD</a>
+        </button>
+        <div id="user-score" style="margin-top: 20px;">Demo Score</div>
+        <button id="restart" style="background-color: darkorange;">Restart</button>
+    </div>
+    <button onclick="history.back()" style="background-color: black; color: #fff; width: 150PX; height: 50PX; margin-top: 30PX;">
+        PREVIOUS-PAGE
+               </button>
+<script src="script569.js"></script>
+</body>
+
+</html>
+
+let timeLeft = document.querySelector(".time-left");
+let quizContainer = document.getElementById("container");
+let nextBtn = document.getElementById("next-button");
+let countOfQuestion = document.querySelector(".number-of-question");
+let displayContainer = document.getElementById("display-container");
+let scoreContainer = document.querySelector(".score-container");
+let restart = document.getElementById("restart");
+let userScore = document.getElementById("user-score");
+let startScreen = document.querySelector(".start-screen");
+let startButton = document.getElementById("start-button");
+let questionCount;
+let scoreCount = 0;
+let count = 60;
+let countdown;
+let Backbtn=document.getElementById("back-button");
+
+
+const quizArray = [
+    {
+        id: "0",
+        question: " What does the term Full Stack Development refer to?"
+,
+        options: ["Development that involves stack data structures","Development that involves front-end and back-end programming","Development that involves only backend programming","None of the above"],
+        correct: "Development that involves front-end and back-end programming",
+    },
+    {
+        id: "1",
+        question: " Which of the following is not a front-end technology?",
+        options: ["HTML","CSS","JavaScript","SQL"],
+        correct:"SQL" ,
+    },
+    {
+        id: "2",
+        question: "Who invented Computer?",
+        options: ["Charles Babbage", "Henry Luce", "Henry Babbage", "Charles Luce"],
+        correct: "Charles Babbage",
+    },
+    {
+        id: "3",
+        question: "What do you call a computer on a network that requests files from another computer?",
+        options: ["A client", "A host", "A router", "A web server"],
+        correct: "A client",
+    },
+    {
+        id: "4",
+        question: "Hardware devices that are not part of the main computer system and are often added later to the system.",
+        options: ["Peripheral", "Clip art", "Highlight", "Execute"],
+        correct: "Peripheral",
+    },
+    {
+        id: "5",
+        question: "The main computer that stores the files that can be sent to computers that are networked together is:",
+        options: ["Clip art", "Mother board", "Peripheral", "File server"],
+        correct: "File server",
+    }, {
+        id: "6",
+        question: "How can you catch a computer virus?",
+        options: ["Sending e-mail messages", "Using a laptop during the winter", "Opening e-mail attachments", "Shopping on-line"],
+        correct: "Opening e-mail attachments",
+    },
+    {
+        id: "7",
+        question: "Google (www.google.com) is a:",
+        options: ["Search Engine", "Number in Math", "Directory of images", "Chat service on the web"],
+        correct: "Search Engine",
+    },
+    {
+        id: "8",
+        question: "Which is not an Internet protocol?",
+        options: ["HTTP", "FTP", "STP", "IP"],
+        correct: "STP",
+    },
+    {
+        id: "9",
+        question: "Which of the following is not a valid domain name?",
+        options: ["www.yahoo.com", "www.yahoo.co.uk", "www.com.yahoo", "www.yahoo.co.in"],
+        correct: "www.com.yahoo",
+    },
+
+    {
+        id: "10",
+        question:"The purpose of the Front-end framework in Full stack development is ____." ,
+        options: ["To provide the client-side interface","To manage database","To reduce the server load","To send http requests",],
+        correct: "To provide the client-side interface",
+    },
+    {
+        id: "11",
+        question:"Amongst which of the following programming language is used as a server-side language?" ,
+        options: ["Python","C++","JavaScript","Both A and C"],
+        correct: "Both A and C",
+    },
+    {
+        id: "12",
+        question:"What is a Front-end framework?",
+        options: ["A development platform for developing user-interface for software applications","A database to store and manage the data of an application","A development platform for writing server-side logic","None of the above"],
+        correct: "A development platform for developing user-interface for software applications",
+    }, 
+    {
+        id: "13",
+        question:"Database in Full stack development is used to ____",
+        options: ["Styling HTML pages","Storing and retrieving data","Handling errors on server-side","Rendering web pages"],
+        correct: "Storing and retrieving data",
+    }, 
+    {
+        id: "14",
+        question:"What is Git?",
+        options: ["Framework","Version control system","Database","Package manager"],
+        correct: "Version control system",
+    }, 
+    {
+        id: "15",
+        question:"CRUD stands for ____.",
+        options: ["Create, Read, Upload, Delete","Create, Read, Upgrade, Deploy","Create, Remove, Upgrade, Delete","Create, Read, Update, Delete"],
+        correct: "Create, Read, Update, Delete",
+    },
+    {
+        id: "16",
+        question:"The term deployment refers to",
+        options: ["Running the project on a server to make it accessible to all","Bundling all the project files into a single file","Removing unnecessary files","Updating existing project"],
+        correct: "Running the project on a server to make it accessible to all",
+    },
+    {
+        id: "17",
+        question:" A web server in Full Stack Development is ____.",
+        options: ["Rendering the user interface","Handling client-side interactions","Executing server-side code and processing requests","Writing server-side logics"],
+        correct: "Executing server-side code and processing requests",
+    },
+    {
+        id: "18",
+        question:"Is JavaScript synchronous or asynchronous?",
+        options: ["Synchronous","Asynchronous","Both","Synchronous but can be used as asynchronous",],
+        correct: "Synchronous but can be used as asynchronous",
+    },
+    {
+        id: "19",
+        question:" SPA stands for ____. ",
+        options: ["Standard Page Application","Single Page Application","Smart Protocol Authentication","Scalable Performance Architecture"],
+        correct: "Single Page Application",
+    },
+    {
+        id: "20",
+        question:"Amongst which of the following is a back-end framework in Python?",
+        options: ["Django","Flask","Both A and B","None of the above"],
+        correct: "Both A and B",
+    },
+    {
+        id: "21",
+        question:"Amongst which of the following type of database is used in Full stack development?",
+        options: ["Relational","JSON","XML","GraphQL"],
+        correct: "Relational",
+    },
+    {
+        id: "22",
+        question:"Amongst which of the following protocol is used to exchange the data between client and server?",
+        options: ["HTTP","TCP","SMTP","FTP"],
+        correct: "HTTP",
+    },
+    {
+        id: "23",
+        question:"What is the purpose of CSS in Full stack development?",
+        options: ["To style and format HTML elements","To manage http request and response","To store and retrieve data","None of the above"],
+        correct: "To style and format HTML elements",
+    },
+    {
+        id: "24",
+        question:"Which of the following statement is TRUE about AJAX?",
+        options: ["AJAX enables asynchronous data retrieval without reloading the entire page","AJAX improves the design layout","AJAX helps in creating dynamic websites","AJAX is a popular query language for Full stack development"],
+        correct: "AJAX enables asynchronous data retrieval without reloading the entire page",
+    },
+    {
+        id: "25",
+        question:" The role of view in model-view-controller architecture is ____.",
+        options: ["Displaying data to the user","Optimize database queries","Handle client's request","Manage server-side routing"],
+        correct: "Displaying data to the user",
+    },
+    {
+        id: "26",
+        question:"Amongst which of the following is TRUE about model-view-architecture?",
+        options: ["The View accesses the data from the Model using AJAX calls","Model and View are independent and do not communicate directly","Model and View communicate via Controller","Model and View communicate directly"],
+        correct: "Model and View are independent and do not communicate directly",
+    },
+    {
+        id: "27",
+        question:"Amongst which of the following is not a NoSQL database used in Full Stack Development?",
+        options: ["MongoDB","PostgreSQL","CouchDB","Hadoop"],
+        correct: "Hadoop",
+    },
+    {
+        id: "28",
+        question:" In HTML, the iframe tag is used to ____.",
+        options: ["Embed another HTML document or a web page within the current document","Insert a video in the HTML document","Create a frame in an HTML document","None of the above"],
+        correct: "Embed another HTML document or a web page within the current document",
+    },
+    {
+        id: "29",
+        question:"Which HTML tag is used to create vector graphics and illustrations?",
+        options: ["canvas tag","svg tag","video tag","details tag"],
+        correct: "svg tag",
+    },
+    {
+        id: "30",
+        question:"Which of the following statement is FALSE about class attributes in HTML elements?",
+        options: ["The class attribute is used to assign one or more class names to an HTML element","Class attribute allows applying CSS and JavaScript to HTML elements based on the class name","The class attribute is used to assign an ID to the HTML element","The class attribute is one of the most used attributes in HTML elements"],
+        correct: "The class attribute is used to assign an ID to the HTML element",
+    },
+    {
+        id: "31",
+        question:" In an HTML document, which tag is used to add JavaScript code?",
+        options: ["javascript tag","js tag","script tag","java tag"],
+        correct: "script tag",
+    },
+    {
+        id: "32",
+        question:"Which of the following is an array method in JavaScript?",
+        options: ["map","every","reduce","all of the above"],
+        correct: "all of the above",
+    },
+    {
+        id: "33",
+        question: "Which is the most widely spoken language in the world?",
+        options: ["Spanish", "Mandarin", "English", "German"],
+        correct: "English",
+    },
+    {
+        id: "34",
+        question: "Which is the only continent in the world without a desert?",
+        options: ["North America", "Asia", "Africa", "Europe"],
+        correct: "Europe",
+    },
+
+];
+
+
+
+
+//Restart Quiz
+restart.addEventListener("click", () => {
+    initial();
+    displayContainer.classList.remove("hide");
+    scoreContainer.classList.add("hide");
+});
+
+//Next Button
+nextBtn.addEventListener(
+    "click",
+    (displayNext = () => {
+        //increment questionCount
+        questionCount += 1;
+        //if last question
+        if (questionCount == quizArray.length) {
+            //hide question container and display score
+            displayContainer.classList.add("hide");
+            scoreContainer.classList.remove("hide");
+            //user score
+            userScore.innerHTML =
+                "Your score is " + scoreCount + " out of " + questionCount;
+        } else {
+            //display questionCount
+            countOfQuestion.innerHTML =
+                questionCount + 1 + " of " + quizArray.length + " Question";
+            //display quiz
+            quizDisplay(questionCount);
+            count = 60;
+            clearInterval(countdown);
+            timerDisplay();
+        }
+    })
+);
+Backbtn.addEventListener(
+    "click",
+    (displayNext = () => {
+        //increment questionCount
+        questionCount -= 1;
+        //if last question
+        if (questionCount == quizArray.length) {
+            //hide question container and display score
+            displayContainer.classList.add("hide");
+            scoreContainer.classList.remove("hide");
+            //user score
+            userScore.innerHTML =
+                "Your score is " + scoreCount + " out of " + questionCount;
+        } else {
+            //display questionCount
+            countOfQuestion.innerHTML =
+                questionCount + 1 + " of " + quizArray.length + " Question";
+            //display quiz
+            quizDisplay(questionCount);
+            count = 60;
+            clearInterval(countdown);
+            timerDisplay();
+        }
+    })
+);
+//Timer
+
+const timerDisplay = ( ) => {
+    countdown = setInterval(() => {
+        count--;
+        timeLeft.innerHTML = `${count}s`;
+        if (count == 0) {
+            clearInterval(countdown);
+            displayNext();
+        }
+    }, 1000);
+};
+
+//Display quiz
+const quizDisplay = (questionCount) => {
+    let quizCards = document.querySelectorAll(".container-mid");
+    //Hide other cards
+    quizCards.forEach((card) => {
+        card.classList.add("hide");
+    });
+    //display current question card
+    quizCards[questionCount].classList.remove("hide");
+};
+
+//Quiz Creation
+function quizCreator() {
+    //randomly sort questions
+    quizArray.sort(() => Math.random() - 0.5);
+    //generate quiz
+    for (let i of quizArray) {
+        //randomly sort options
+        i.options.sort(() => Math.random() - 0.5);
+        //quiz card creation
+        let div = document.createElement("div");
+        div.classList.add("container-mid", "hide");
+        //question number
+        countOfQuestion.innerHTML = 1 + " of " + quizArray.length + " Question";
+        //question
+        let question_DIV = document.createElement("p");
+        question_DIV.classList.add("question");
+        question_DIV.innerHTML = i.question;
+        div.appendChild(question_DIV);
+        //options
+        div.innerHTML += `
+    <button class="option-div" onclick="checker(this)">${i.options[0]}</button>
+     <button class="option-div" onclick="checker(this)">${i.options[1]}</button>
+      <button class="option-div" onclick="checker(this)">${i.options[2]}</button>
+       <button class="option-div" onclick="checker(this)">${i.options[3]}</button>
+    `;
+        quizContainer.appendChild(div);
+    }
+}
+
+//Checker Function to check if option is correct or not
+function checker(userOption) {
+    let userSolution = userOption.innerText;
+    let question =
+        document.getElementsByClassName("container-mid")[questionCount];
+    let options = question.querySelectorAll(".option-div");
+
+    //if user clicked answer == correct option stored in object
+    if (userSolution === quizArray[questionCount].correct) {
+        userOption.classList.add("correct");
+        scoreCount++;
+    } else {
+        userOption.classList.add("incorrect");
+        //For marking the correct option
+        options.forEach((element) => {
+            if (element.innerText == quizArray[questionCount].correct) {
+                element.classList.add("correct");
+            }
+        });
+    }
+
+    //clear interval(stop timer)
+    clearInterval(countdown);
+    //disable all options
+    options.forEach((element) => {
+        element.disabled = true;
+    });
+}
+
+//initial setup
+function initial() {
+    quizContainer.innerHTML = "";
+    questionCount = 0;
+    scoreCount = 0;
+    count = 11;
+    clearInterval(countdown);
+    timerDisplay();
+    quizCreator();
+    quizDisplay(questionCount);
+}
+
+//when user click on start button
+startButton.addEventListener("click", () => {
+    startScreen.classList.add("hide");
+    displayContainer.classList.remove("hide");
+    initial();
+});
+
+//hide quiz and display start screen
+window.onload = () => {
+    startScreen.classList.remove("hide");
+    displayContainer.classList.add("hide");
+};
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" 
+          content="width=device-width,
+                   initial-scale=1.0" />
+   <style>
+    
+
+ * {
+     font-family: Georgia, Times, "Times New Roman", serif;
+ }
+
+ .quiz,
+ .scores {
+     margin: 50px auto 0 auto;
+     max-width: 400px;
+ }
+
+ #top {
+     color: green;
+ }
+
+ .containerNew {
+     border: 5px solid;
+     position: absolute;
+     top: 50%;
+     left: 50%;
+     height: 580px;
+     width: 50%;
+     transform: translate(-50%, -50%);
+     padding: 10px;
+ }
+
+ p {
+     margin: 15px 15px;
+ }
+ button {
+     display: inline-block;
+     margin: 10px;
+     cursor: pointer;
+     color: #fff;
+     background-color: #52865a;
+     border-radius: 5px;
+     border: 0;
+     padding: 20px;
+ }
+
+ button:hover {
+     background-color: #2a8d12;
+ }
+
+ .options button {
+     display: block;
+ }
+
+ input[type="text"] {
+     font-size: 100%;
+ }
+   </style>
+   
+    <title>Code Quiz</title>
+</head>
+
+<body style="background-image:url('https://www.gifcen.com/wp-content/uploads/2021/05/quiz-gif-12.gif');">
+   
+    <div class="containerNew" style=" background-color: rgb(127, 255, 138);border: #2a8d12;">
+        <H1 style="text-align: center; font-family: 'Times New Roman', Times, serif; font-weight: bolder;">THANK YOU COMPELETING-QUIZ</H1>
+        <header>
+            <div>
+                <a href="./highscore.html">
+                    <button class="scores-header" 
+                            id="view-high-scores">
+                        REVIEW ANSWER
+                    </button>
+                </a>
+            </div>
+
+            <div class="accuracy">
+                <p>
+                    YOUR ACCURACY:
+                    <span id="accuracy">
+                        000
+                    </span>
+                </p>
+            </div>
+            
+        </header>
+
+                    <h1 id="top">
+                    GENERAL  QUESTION  COMPUTER SCIENCE ENGINEERING
+                    </h1>
+                    <h1>
+                       CODING QUIZ
+                    </h1>
+                    <p>
+                        Try to answer the following
+                        code-related questions with
+                        in the time limit. Keep in
+                        mind that incorrect answers
+                        will penalize your score/time
+                        by sixty seconds!
+                    </p>
+                    <button id="start">
+                       <a  style="color:black ; text-decoration: none;"   href="file:///C:/Users/adity/OneDrive/Documents/c%20file/aditya%20kumar/view.html">VEIW YOUR HIGH SCORE<a>
+                    </button>
+                </div>
+            </div>
+            <button onclick="history.back()" style="background-color: black; color: #fff;">
+     PREVIOUS-PAGE
+            </button>
+</body>
+
+</html
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Bootstrap Theme The Band</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+<style>
+    h2{
+        color: #b60303;
+    }
+    p{
+        color: #fff;
+    }
+</style>
+<body style="background-image: url('https://th.bing.com/th/id/OIP.6YV9Bdmq0hYkRCgAChod0gHaE8?w=1536&h=1024&rs=1&pid=ImgDetMain');">
+<H1 style="text-decoration: solid; text-align: center; background-color: rgb(185, 178, 170);"> YOU HAVE SUCCESFULLY COMPLETED YOUR QUIZ</H1>
+<button onclick="history.back()" style="background-color: black; color: #fff; height: 50px;">
+    PREVIOUS-PAGE
+           </button>
+<fieldset  style="background-image: url('https://th.bing.com/th/id/OIP.nc2iAfInQG3GcDRMJ9NIPgHaE7?w=883&h=588&rs=1&pid=ImgDetMain'); border-radius: 20%; width:600px; height: 700px; margin-top: 100px; margin-left: 400px;">
+<h2  style="text-align: center; font-family: 'Times New Roman', Times, serif; margin-top: 100PX;">DETAILS ARE GIVEN BELOW</h2>
+<P style=" font-family: 'Times New Roman', Times, serif; text-align: center;">NAME: VISHESH KUMAR PRAJAPATI</P>
+<P style="text-align: center; font-family: 'Times New Roman', Times, serif;">COURSE:FULL STACK WEB DEVELOPMENT</P>
+<P style="text-align: center; font-family: 'Times New Roman', Times, serif;">UNIVERSITY:BABU BANARASI DAS UNIVERSITY</P>
+<P style="text-align: center; font-family: 'Times New Roman', Times, serif;">YOUR SCORE:<input type="text" placeholder="ENTER YOUR SCORE"></P>
+<P style="text-align: center; font-family: 'Times New Roman', Times, serif;">VERIFY SCORE:<input type="submit" onclick="mySUB()"></P>
+<p style="text-align: center; font-family: 'Times New Roman', Times, serif;">CHECK NOW!<input type="checkbox"></p>
+<P style="text-align: center; font-family: 'Times New Roman', Times, serif;">ACCURACY:<input type=" text" placeholder="ACCURACY"></P>
+<P style="text-align: center; font-family: 'Times New Roman', Times, serif;">ATTEMPTED QUESTION:<input type=" text" placeholder="ATTEMPTED QUESTION"></P>
+<P style="text-align: center; font-family: 'Times New Roman', Times, serif;">NON ATTEMPTED QUESTION:<input type="text" placeholder="NON ATTEMPTED QUESTION"></P>
+</fieldset>
+<button style="margin-left: 550PX; margin-top: 50PX;"  onclick="myFunction()">
+    <a style="text-decoration: none; font-size: x-large; font-family: 'Times New Roman', Times, serif; font-weight: bolder;" href="C:\Users\adity\OneDrive\Documents\Pictures\Screenshots\sadfdgfhgnb .png">GENERATE CERTIFICATE</a>
+</button>
+<footer>
+    <P style="background-color: black; color: blue; text-align: center; margin-top: 100PX; padding: 17PX;">COPYRIGHT@VISHESHK.P56466</P>
+</footer>
+<script>
+    function mySUB(params) {
+       alert("verifying your given score") ;
+       alert("your score will be matches ");
+       alert("now! again click check now! then detailed will be forwarded to next authority thank you!");
+    }
+    function myFunction(){
+        alert("GENERATE YOUR CERTIFICATE CLICK OK BUTTON!");
+        alert("TAKE FEW MINUTES");
+        alert("CHECKING YOUR GIVEN DETAIL");
+        alert("NOW! FINALLY GENRATES YOUR CERTIFICATE")
+    }
+</script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Bootstrap Theme The Band</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+<style>
+    p{
+        text-decoration: none;
+        font-weight: bold;
+        font-size: larger;
+        font-family: 'Times New Roman', Times, serif;
+    }
+    h1{
+        font-size: larger;
+        font-family: 'Times New Roman', Times, serif;
+        font-weight: bold;
+    }
+</style>
+<body style="background-image:url('https://www.gifcen.com/wp-content/uploads/2021/05/quiz-gif-12.gif');">
+
+    <h1  style="text-align: center; background-color: rgb(13, 117, 221); font-size:xx-large; font-family: 'Times New Roman', Times, serif; font-weight: bolder;">CHECK YOUR ANSWER </h1>
+    <button onclick="history.back()" style="background-color: black; color: #fff;">
+   PREVIOUS-PAGE
+               </button>
+
+   
+    <fieldset style="border: solid rgb(12, 164, 214); ; margin-top:100PX; margin-left: 260PX; background-image: url('https://miro.medium.com/v2/resize:fit:1200/1*dWIIAFRa-wVkin_WDzFGAw.jpeg'); width:800PX;">
+
+<h1>1. What does the term "Full Stack Development" refer to?</h1>
+</p>    <BR>
+<p>  A:Development that involves stack data structures
+</p>     <BR>
+<p style="background-color: rgb(157, 208, 157);"> B:Development that involves front-end and back-end programming</p>
+    <BR>
+<p> C:Development that involves only backend programming</p>
+<BR>
+<p> D:None of the above</p>
+<BR>
+<p style="background-color: green;">Answer: B) Development that involves front-end and back-end programming</p>
+    <BR>
+<p>Explanation:</p>
+    <BR>
+<p>Full Stack Development refers to the development of the front end and back end of a web application. A full-stack web developer designs complete web applications and websites.
+</p>  <BR>
+<p>discuss this question
+    <BR>
+<h1>2. Which of the following is not a front-end technology?</h1>
+<BR>
+<p> A:HTML</p>
+    <BR>
+<p> B:CSS</p>
+    <BR>
+<p> C:JavaScript</p>
+    <BR>
+<p style="background-color: rgb(100, 136, 100);"> D:SQL
+    <BR>
+<p style="background-color: green;">Answer: D) SQL</p>
+    <BR>
+<p>Explanation:</p>
+    <BR>
+<p>HTML, CSS, and JavaScript are front-end technologies to develop a website while SQL is not a front-end technology; it is used to store and retrieve the data from a database using SQL queries.
+</p>
+    <BR>
+<p>Discuss this question</p>
+
+    <BR>
+<h1>3. The purpose of the Front-end framework in Full stack development is ____.</h1>
+    <BR>
+<p style="background-color: rgb(125, 165, 125);"> A:To provide the client-side interface </p>
+    <BR>
+<p> B:To manage database</p>
+    <BR>
+<p> C:To reduce the server load</p>
+    <BR>
+<p> D:To send http requests</p>
+    <BR>
+<p style="background-color: green;">Answer: A) To provide the client-side interface</p>
+    <BR>
+<p>Explanation:
+    <BR>
+<p>Front-end development focuses to provide the client-side interface.</p>
+    <BR>
+<p>Discuss this question  </p>
+    <BR>
+<h1>4. Amongst which of the following programming language is used as a server-side language?</h1>
+    <BR>
+
+<p> A:Python</p>
+    <BR>
+<p> B:C++</p>
+    <BR>
+<p> C:JavaScript</p>
+    <BR>
+<p style="background-color: rgb(146, 172, 146);"> D:Both A and C</p>
+    <BR>
+<p style="background-color: green;">Answer: D) Both A and C</p>
+    <BR>
+<p>Explanation:</p>
+    <BR>
+<p>Both Python and JavaScript can be used as server-side languages with their respective framework.</p>
+    <BR>
+<p>Discuss this question</p>
+    <BR>
+<h1>5. What is a Front-end framework?</h1>
+    <BR>
+<p style="background-color: rgb(151, 204, 151);">  A:A development platform for developing user-interface for software applications</p>
+    <BR>
+<p> B:A database to store and manage the data of an application</p>
+    <BR>
+<p> C:A development platform for writing server-side logic</p>
+    <BR>
+<p> D:None of the above</p>
+    <BR>
+<p style="background-color: green;"  >Answer: A) A development platform for developing user-interface for software applications</p>
+    <BR>
+<p>Explanation:</p>
+ <BR>
+<p>A framework is a development platform for developing user-interface for software applications.</p>
+<BR>
+<p>Discuss this question</p>
+<BR>
+<h1>6. Database in Full stack development is used to ____.</h1>
+<BR>
+<p> A:Styling HTML pages</p>
+<BR>
+<p style="background-color: rgb(140, 182, 140);"> B:Storing and retrieving data</p>
+<BR>
+<p> C:Handling errors on server-side</p>
+<BR>
+<p> D:Rendering web pages</p>
+<BR>
+<p style="background-color: green;">Answer: B) Storing and retrieving data</p>
+<BR>
+<p>Explanation:</p>
+<BR>
+<p>A database is an essential part of the full stack. A database is used to store, retrieve, and manage data.</p>
+<BR>
+<p>Discuss this question</p>
+<BR>
+<h1>7. What is Git?</h1>
+<BR>
+<p> A:Framework</p>
+<BR>
+<p style="background-color: rgb(171, 216, 171);"> B:Version control system</p>
+<BR>
+<p>C:Database</p>
+<BR>
+<p> D:Package manager</p>
+<BR>
+<p style="background-color: green;">Answer: B) Version control system</p>
+<BR>
+<p>Explanation:</p>
+<BR>
+<p>Git is an open-source version control system; it is used to manage projects and work together with multiple developers. </p>
+<BR>
+<p>Discuss this question</p>
+<BR>
+<h1>8. CRUD stands for ____.</h1>
+<BR>
+<P> A:Create, Read, Upload, Delete</P>
+<BR>
+<P> B:Create, Read, Upgrade, Deploy</P>
+<BR>
+<P> C:Create, Remove, Upgrade, Delete</P>
+<BR>
+<P style="background-color: rgb(130, 189, 130);"> D:Create, Read, Update, Delete</P>
+<BR>
+<P style="background-color: green;">Answer: D) Create, Read, Update, Delete</P>
+<BR>
+<P>Explanation:</P>
+<BR>
+<P>CRUD stands for Create, Read, Update, and Delete. It refers to the four basic operations that can be performed on data.</P>
+<BR>
+Discuss this question
+<BR>
+ <H1>9. The term "deployment" refers to</H1>
+ <BR>
+ <P style="background-color: rgb(159, 192, 159);"> A:Running the project on a server to make it accessible to all</P>
+ <BR>
+ <P> B:Bundling all the project files into a single file</P>
+ <BR>
+ <P> C:Removing unnecessary files</P>
+ <BR>
+ <P> D:Updating existing project</P>
+ <BR>
+ <P style="background-color: green;">Answer: A) Running the project on a server to make it accessible to all </P>
+ <BR>
+ <P>Explanation:</P>
+ <BR>
+ <P>Deployment is a process of pushing all the changes made to the project and making it run on a server to access globally.</P>
+ <BR>
+ <P>Discuss this question</P>
+ <BR>
+ <H1>10. A web server in Full Stack Development is ____.</H1>
+ <BR>
+<P> A:Rendering the user interface</P>
+<BR>
+<P> B:Handling client-side interactions</P>
+<BR>
+<P style="background-color: rgb(154, 186, 154);" >C:Executing server-side code and processing requests</P>
+<BR>
+<P>D:Writing server-side logics</P>
+<BR>
+<P style="background-color: green;">Answer: C) Executing server-side code and processing requests</P>
+<BR>
+<P>Explanation:</P>
+<BR>
+<P>A web server is responsible to execute server-side code and processing requests; it generates a response to incoming requests.</P>
+<BR>
+<P>Discuss this question</P>
+<BR>
+ <H1>11. Is JavaScript synchronous or asynchronous?</H1>
+ <BR>
+ <P> A:Synchronous</P>
+ <BR>
+ <P> B:Asynchronous</P>
+ <BR>
+ <P> C:Both</P>
+ <BR>
+ <P style="background-color: rgb(173, 209, 173);"> D:Synchronous but can be used as asynchronous</P>
+ <BR>
+ <P style="background-color: green;">Answer: D) Synchronous but can be used as asynchronous</P>
+ <BR>
+
+ <P>Explanation:</P>
+ <BR>
+ <P>JS is synchronous but it can act as asynchronous using promise and async await.</P>
+ <BR>
+ <P>Discuss this question
+    <BR>
+ <H1>12. SPA stands for ____.</H1>
+ <BR>
+ <P> A:Standard Page Application </P>
+ <BR>
+ <P style="background-color: rgb(177, 217, 177);"> B:Single Page Application </P>
+ <BR>
+ <P>C:Smart Protocol Authentication </P>
+ <BR>
+ <P>D:Scalable Performance Architecture </P>
+ <BR>
+ <P style="background-color: green;">Answer: B) Single Page Application </P>
+ <BR>
+ <P>Explanation:</P>
+ <BR>
+ <P>SPA stands for Single Page Application. It is a type of web application architecture; the content can be loaded and updated on a single web page dynamically.</P>
+ <BR>
+ <P>Discuss this question </P>
+ <BR>
+ <H1>13. Amongst which of the following is a back-end framework in Python?</H1>
+ <BR>
+ <P>A:Django</P>
+ <BR>
+ <P> B:Flask</P>
+ <BR>
+ <P style="background-color: rgb(117, 161, 117);"> C:Both A and B</P>
+ <BR>
+ <P> D:None of the above</P>
+ <BR>
+ <P style="background-color: green;">Answer: C) Both A and B</P>
+ <BR>
+ <P>Explanation:</P>
+ <BR>
+ <P>Django and Flask are both popular web frameworks for building web applications in Python.</P>
+ <BR>
+ <P>Discuss this question </P>
+ <BR>
+ <H1>14. Amongst which of the following type of database is used in Full stack development?</H1>
+ <BR>
+ <P style="background-color: rgb(132, 169, 132);">A:Relational </P>
+ <BR>
+ <P> B:JSON </P>
+ <BR>
+ <P> C:XML</P>
+ <BR>
+ <P> D:GraphQL</P>
+ <BR>
+ <P style="background-color: green;">Answer: A) Relational </P>
+ <BR>
+ <P>Explanation: </P>
+ <BR>
+ <P>Relational Database is commonly used in Full stack development. It stores data in rows and columns. </P>
+ <BR>
+ <P>Discuss this question</P>
+ <BR>
+ <H1>15. Amongst which of the following protocol is used to exchange the data between client and server?</H1>
+ <BR>
+ <P style="background-color: rgb(107, 158, 107);"> A:HTTP</P>
+    <BR>   
+
+ <P> B:TCP</P>
+    <BR>
+ <P>C:SMTP</P>
+    <BR>
+ <P>D:FTP</P>
+    <BR>
+ <P style="background-color: green;">Answer: A) HTTP </P>
+ <BR>
+ <P>Explanation: </P>
+ <BR>
+ <P>The Hypertext Transfer Protocol (HTTP) is an application layer protocol used for data communication over the Internet.
+    <BR>
+ <P>Discuss this question
+    <BR>
+  <H1>16. What is the purpose of CSS in Full stack development?</H1>
+  <BR>
+ <P style="background-color: rgb(117, 152, 117);">A:To style and format HTML elements </P>
+ <BR>
+ <P>B:To manage http request and response </P>
+ <BR>
+ <P>C:To store and retrieve data </P>
+ <BR>
+ <P>D:None of the above</P>
+ <BR>
+ <P style="background-color: green;">Answer: A) To style and format HTML elements </P>
+ <BR>
+
+ <P>Explanation: </P>
+ <BR>
+ <P>CSS is cascading style sheet and is used to style HTML documents. It is used to create attractive and user-friendly websites and applications.</P>
+ <BR>
+ <P>Discuss this question </P>
+ <BR>
+ <H1>17. Which of the following statement is TRUE about AJAX?</H1>
+ <BR>
+<P style="background-color: rgb(146, 201, 146);" >A:AJAX enables asynchronous data retrieval without reloading the entire page</P>
+<BR>
+<P>B:AJAX improves the design layout</P>
+<BR>
+<P>C:AJAX helps in creating dynamic websites</P>
+<BR>
+<P> D:AJAX is a popular query language for Full stack development</P>
+<BR>
+<P style="background-color: green;">Answer: A) AJAX enables asynchronous data retrieval without reloading the entire page.</P>
+<BR>
+<P>Explanation:</P>
+<BR>
+<P>AJAX is asynchronous JavaScript and XML; it enables asynchronous data retrieval without reloading the entire page.</P>
+<BR>
+<P>Discuss this question</P>
+<BR>
+ <H1>18. The role of view in model-view-controller architecture is ____.</H1>
+ <BR>
+<P style="background-color: rgb(158, 205, 158);"> A:Displaying data to the user</P>
+<BR>
+<P> B:Optimize database queries</P>
+<BR>
+<P> C:Handle client's request</P>
+<BR>
+
+<P>D:Manage server-side routing</P>
+<BR>
+<P style="background-color: green;">Answer: A) Displaying data to the user</P>
+<BR>
+<P>Explanation:</P>
+<BR>
+<P>The View handles the presentation layer, which involves displaying data and user interfaces to the end-users.</P>
+<BR>
+<P>Discuss this question</P>
+<BR>
+<h1> Amongst which of the following is TRUE about model-view-architecture?</h1>
+<BR>
+<P>A:The View accesses the data from the Model using AJAX calls</P>
+<BR>
+<P style="background-color: rgb(171, 214, 171);">B:Model and View are independent and do not communicate directly</P>
+<BR>
+<P>C:Model and View communicate via Controller</P>
+<BR>
+<P>D:Model and View communicate directly</P>
+<BR>
+<P style="background-color: green;">Answer: B) Model and View are independent and do not communicate directly</P>
+<BR>
+<P>Explanation:</P>
+<BR>
+<P>Model and View are independent of each other and do not communicate directly. Model-view architecture makes the code less complex and easier to work with.</P>
+<BR>
+<P>Discuss this question</P>
+<BR>
+ <h1>20. Amongst which of the following is not a NoSQL database used in Full Stack Development?</h1>
+ <BR>
+ <p>A:MongoDB </p>
+ <BR>
+ <p> B:PostgreSQL</p>
+ <BR>
+ <p> C:CouchDB</p>
+ <BR>
+ <p style="background-color: rgb(142, 194, 142);"> D:Hadoop</p>
+ <BR>
+ <p style="background-color: green;">Answer: D) Hadoop</p>
+ <BR>
+<p>Explanation:</p>
+<BR>
+<p>Hadoop is not a database. It is an open-source framework that is used to efficiently store and process large datasets.</p>
+<BR>
+<H1>21. In HTML, the iframe tag is used to ____.</H1>
+<BR>
+<P style="background-color: rgb(167, 216, 167);">Embed another HTML document or a web page within the current document</P>
+<BR>
+<P>Insert a video in the HTML document</P>
+<BR>
+<P>reate a frame in an HTML document</P>
+<BR>
+<P>one of the above</P>
+<BR>
+<P  style="background-color: green;">Answer: A) Embed another HTML document or a web page within the current document</P>
+<BR>
+<P>Explanation:</P>
+<BR>
+<P>ith the help of the iframe tag, we can add an HTML document or a web page with the current document so that multiple pages can be embedded on the same page.
+</P>
+<BR>
+<H1>22. Which HTML tag is used to create vector graphics and illustrations?</H1>
+<P>canvas</P>
+<br>
+<P style="background-color: rgb(132, 204, 132);">svg</P>
+<br>
+<P>video</P>
+<br>
+<P>details</P>
+<br>
+<P style="background-color: green;">Answer: B) svg</P>
+<br>
+<P>Explanation:</P>
+<br>
+<P>The svg element is an HTML tag used to embed Scalable Vector Graphics (SVG) in HTML documents. It is an XML-based vector graphics format that allows for the creation of high-quality and resolution-independent graphics suitable for web applications and interactive graphics.
+<BR>
+<h1>23. Which of the following statement is FALSE about class attributes in HTML elements?</h1> <BR>
+<P>The class attribute is used to assign one or more class names to an HTML element</P><BR>
+<P style="background-color: rgb(166, 210, 166);">Class attribute allows applying CSS and JavaScript to HTML elements based on the class name</P><BR>
+<P>The class attribute is used to assign an ID to the HTML element</P><BR>
+<P>The class attribute is one of the most used attributes in HTML elements</P><BR>
+<P style="background-color: green;">Answer: C) The class attribute is used to assign an ID to the HTML element.</P><BR>
+    <BR>
+<P>Explanation:</P>
+<BR>
+<P>class attribute is used to assign one or more class names to the HTML elements on the basis on which one can style the element while the id is assigned by using the ID attribute.
+</P>
+<BR>
+ <H1>24. In an HTML document, which tag is used to add JavaScript code?</H1>
+<P>Javascript</P><BR>
+<P>js</P><BR>
+<P style="background-color: rgb(172, 221, 172);">script</P><BR>
+<P>java</P><BR>
+<P style="background-color: green;">Answer: C) script</P><BR>
+
+<P>Explanation:</P>
+<BR>
+<P>The script tag is used to add javascript code in an HTML document.</P><BR>
+<p>Discuss this question</p><BR>
+<H1>25. Which of the following is an array method in JavaScript?</H1><BR>
+<P>map</P><BR>
+<P>every</P><BR>
+<P>reduce</P><BR>
+<P style="background-color: rgb(143, 214, 143);">all of the above</P><BR>
+<P style="background-color: green;">Answer: D) all of the above</P><BR>
+<P>Explanation:</P><BR>
+<P>map, every, and reduce are inbuilt array methods in JavaScript.</P><BR>
+<H1>question 26: "Which is the most widely spoken language in the world?",</H2><BR>
+<P>options: ["Spanish", "Mandarin", "English", "German"]</P><BR>
+<P style="background-color: green;">correct: "Mandarin"</P><BR>
+        <P>question 27: "Which is the only continent in the world without a desert?",</P><br>
+        <P>options: ["North America", "Asia", "Africa", "Europe"],</P><br>
+        <P style="background-color: green;">correct: "Europe",</P><br>
+        <P>question 28: "Who invented Computer?",</P><br>
+        <P>options: ["Charles Babbage", "Henry Luce", "Henry Babbage", "Charles Luce"],</P><br>
+        <P style="background-color: green;">correct: "Charles Babbage",</P><br>
+        <P>question 29: "What do you call a computer on a network that requests files from another computer?",</P><br>
+        <P>options: ["A client", "A host", "A router", "A web server"],</P><br>
+        <P style="background-color: green;">correct: "A client",</P> <br>
+        <P>question 30: "Hardware devices that are not part of the main computer system and are often added later to the system.",</P> <br>
+        <P>options: ["Peripheral", "Clip art", "Highlight", "Execute"],</P> <br>
+        <P style="background-color: green;">correct: "Peripheral",</P> <br>
+        <P>question 31: "The main computer that stores the files that can be sent to computers that are networked together is:",</P> <br>
+        <P>options: ["Clip art", "Mother board", "Peripheral", "File server"],</P> <br>
+        <P style="background-color: green;">correct: "File server",</P> <br>
+        <P>question 32: "How can you catch a computer virus?",</P> <br>
+        <P>options: ["Sending e-mail messages", "Using a laptop during the winter", "Opening e-mail attachments", "Shopping on-line"],</P> <br>
+        <P style="background-color: green;">correct: "Opening e-mail attachments",</P> <br>
+       <P>question 33: "Google (www.google.com) is a:",</P>
+       <P>options: ["Search Engine", "Number in Math", "Directory of images", "Chat service on the web"],</P><br>
+       <P style="background-color: green;">correct: "Search Engine",</P><br>
+       <P>question 34: "Which is not an Internet protocol?",</P><br>
+       <P>options: ["HTTP", "FTP", "STP", "IP"],</P><br>
+       <P style="background-color: green;">correct: "STP",</P><br>
+       <P>question 35: "Which of the following is not a valid domain name?",</P><br>
+      <p>  options: ["www.yahoo.com
+       ", "www.yahoo.co.uk
+       ", "www.com
+       .yahoo", "www.yahoo.co.in
+       "],</p><br>
+     <P style="background-color: green;">   correct: "www.com
+       .yahoo",</p>
+
+</fieldset>
+    </body>
+    </html>
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+  }
+  body {
+    height: 100vh;
+    background: linear-gradient(184deg,#8754ff,#8E2DE2);
+  }
+  .start-screen,
+  .score-container {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  button {
+    border: none;
+    outline: none;
+    cursor: pointer;
+  }
+  #start-button,
+  #restart {
+    font-size: 1.3em;
+    padding: 0.5em 1.8em;
+    border-radius: 0.2em;
+    box-shadow: 0 20px 30px rgba(0, 0, 0, 0.4);
+  }
+  #restart {
+    margin-top: 0.9em;
+  }
+  #display-container {
+    background-color: #ffffff;
+    padding: 3.1em 1.8em;
+    width: 80%;
+    max-width: 37.5em;
+    margin: 0 auto;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+    border-radius: 0.6em;
+  }
+  .header {
+    margin-bottom: 1.8em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 0.6em;
+    border-bottom: 0.1em solid #090282;
+  }
+  .timer-div {
+    background-color: #e1f5fe;
+    width: 7.5em;
+    border-radius: 1.8em;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.7em 1.8em;
+  }
+  .question {
+    margin-bottom: 1.25em;
+    font-weight: 600;
+  }
+  .option-div {
+    font-size: 0.9em;
+    width: 100%;
+    padding: 1em;
+    margin: 0.3em 0;
+    text-align: left;
+    outline: none;
+    background: transparent;
+    border: 1px solid #029d9d;
+    border-radius: 0.3em;
+  }
+  .option-div:disabled {
+    color: #b25959;
+    cursor: not-allowed;
+  }
+  #back-button {
+    font-size: 1em;
+    margin-top: 1.5em;
+    background-color: #8754ff;
+    color: #ffffff;
+    padding: 0.7em 1.8em;
+    border-radius: 0.3em;
+    float:left;
+    box-shadow: 0px 20px 40px rgba(0, 0, 0, 0.3);
+  }
+  #next-button {
+    font-size: 1em;
+    margin-top: 1.5em;
+    background-color: #8754ff;
+    color: #ffffff;
+    padding: 0.7em 1.8em;
+    border-radius: 0.3em;
+    float: right;
+    box-shadow: 0px 20px 40px rgba(0, 0, 0, 0.3);
+  }
+  .hide {
+    display: none;
+  }
+  .incorrect {
+    background-color: #c33b06;
+    color: #b42323;
+    border-color: #a40606;
+  }
+  .correct {
+    background-color: #709e39;
+    color: #4c9f03;
+    border-color: #499705;
+  }
+  #user-score {
+    font-size: 1.5em;
+    color: #ffffff;
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
